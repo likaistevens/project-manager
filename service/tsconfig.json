@@ -1,0 +1,21 @@
+{
+  "include": ["**/*.ts", "../src/type.ts"],
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2019"],
+    "outDir": "../dist", 
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "target": "ES2019",
+    "strict": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./app/*"]
+    },
+  }
+}

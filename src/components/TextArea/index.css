@@ -1,0 +1,21 @@
+.textarea {
+  outline: none;
+  border-top: 1px dashed gray;
+  margin-top: 8px;
+  padding-top: 8px;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
+[contenteditable="true"]:empty:before {
+  content: attr(placeholder);
+  pointer-events: none;
+  display: block; /* For Firefox */
+  color: var(--TextQuaternary);
+}
+
+[contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
