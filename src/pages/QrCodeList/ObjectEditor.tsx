@@ -1,10 +1,5 @@
 import { Button, Grid, Input } from "@arco-design/web-react";
-import {
-  IconDelete,
-  IconDoubleDown,
-  IconDoubleUp,
-  IconPlus,
-} from "@arco-design/web-react/icon";
+import { IconDelete, IconPlus } from "@arco-design/web-react/icon";
 import React, { useEffect, useState } from "react";
 import update from "immutability-helper";
 
@@ -13,42 +8,32 @@ type T = Array<[string, string]>;
 export const ObjectEditor: React.FC<{
   value?: T;
   onChange?: (v: T) => void;
-}> = ({ value, onChange }) => {
-  const [entries, setEntries] = useState(value || []);
-
-  //   useEffect(() => {
-  //     console.log(entries);
-  //   }, [entries]);
+}> = ({ value = [], onChange }) => {
   return (
     <div>
-      {entries.map(([key, value], index) => {
+      {value?.map(([k, v], index) => {
         return (
           <Grid.Row key={index} gutter={20} className="items-center mb-8">
             <Grid.Col span={11}>
               <Input
-                value={key}
+                value={k}
                 onChange={(v) => {
-                  setEntries((old) => {
-                    const newValue = update(old, {
+                  onChange?.(
+                    update(value, {
                       [index]: { [0]: { $set: v } },
-                    });
-                    onChange?.(newValue);
-                    return newValue;
-                  });
+                    })
+                  );
                 }}
               />
             </Grid.Col>
             <Grid.Col span={11}>
               <Input
-                value={value}
+                value={v}
                 onChange={(v) => {
-                  setEntries((old) => {
-                    const newValue = update(old, {
-                      [index]: { [1]: { $set: v } },
-                    });
-                    onChange?.(newValue);
-                    return newValue;
+                  const newValue = update(value, {
+                    [index]: { [1]: { $set: v } },
                   });
+                  onChange?.(newValue);
                 }}
               />
             </Grid.Col>
@@ -56,13 +41,10 @@ export const ObjectEditor: React.FC<{
               <IconDelete
                 className="icon-btn"
                 onClick={() => {
-                  setEntries((old) => {
-                    const newValue = update(old, {
-                      $splice: [[index, 1]],
-                    });
-                    onChange?.(newValue);
-                    return newValue;
+                  const newValue = update(value, {
+                    $splice: [[index, 1]],
                   });
+                  onChange?.(newValue);
                 }}
               />
             </Grid.Col>
@@ -76,13 +58,11 @@ export const ObjectEditor: React.FC<{
           shape="round"
           style={{ width: 150, marginLeft: 20 }}
           onClick={() => {
-            setEntries((old) => {
-              const newValue = update(old, {
+            onChange?.(
+              update(value, {
                 $push: [["", ""]],
-              });
-              onChange?.(newValue);
-              return newValue;
-            });
+              })
+            );
           }}
         >
           <IconPlus /> Add Param

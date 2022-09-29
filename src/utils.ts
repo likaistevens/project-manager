@@ -41,10 +41,28 @@ export function includesByPinyin(
   }
 }
 
-export function getAweme(item: Partial<QrCodeItemType>) {
+export function encodeAweme(item: Partial<QrCodeItemType>) {
   const sp = new URLSearchParams();
   item.params?.forEach((p) => {
     sp.append(p[0], p[1]);
   });
   return `${item.protocol}://${item.path}?${sp.toString()}`;
+}
+
+export function decodeAweme(aweme: string): Partial<QrCodeItemType> {
+  const reg = /^([a-zA-Z]{3,10})(:\/\/)([a-zA-Z]{3,10})(\?)(.+)/gi;
+  const matchRes = reg.exec(aweme);
+  if (!matchRes) {
+    return {};
+  }
+  const protocol = matchRes[1];
+  const path = matchRes[3];
+  const search = matchRes[5];
+  const sp = new URLSearchParams("?" + search);
+
+  return {
+    protocol,
+    path,
+    params: Array.from(sp.entries()),
+  };
 }

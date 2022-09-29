@@ -9,7 +9,7 @@ import {
   listQrCode,
   updateQrCode,
 } from "../../api/qrcode";
-import { getAweme, includesByPinyin } from "../../utils";
+import { encodeAweme, includesByPinyin } from "../../utils";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { debounce } from "lodash";
 import { DragWindow } from "../../components/DragWindow";
@@ -41,7 +41,7 @@ export const QrCodeList = () => {
     const fields = form.getFields();
 
     console.log(fields);
-    console.log(getAweme(fields));
+    console.log(encodeAweme(fields));
     if (fields.id) {
       await updateQrCode(fields);
     } else {

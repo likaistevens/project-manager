@@ -31,7 +31,7 @@ export const QrCodeItem: React.FC<{
       <div className="flex justify-between">
         <div
           className="flex items-center"
-          style={{ width: "calc(100% - 36px)" }}
+          style={{ width: "calc(100% - 88px)" }}
         >
           <Link
             style={{

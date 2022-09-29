@@ -67,6 +67,12 @@
   color: rgb(245, 63, 63);
 }
 
+.icon-btn.arco-icon-close:hover {
+  color: rgb(245, 63, 63);
+  transform: rotate(90deg);
+  transition: transform 0.5s;
+}
+
 .mb-8 {
   margin-bottom: 6px;
 }

@@ -4,17 +4,11 @@ import {
   FormInstance,
   Grid,
   Input,
-  Message,
   Modal,
 } from "@arco-design/web-react";
-import {
-  IconArrowFall,
-  IconArrowRise,
-  IconDoubleUp,
-  IconDoubleDown,
-} from "@arco-design/web-react/icon";
+import { IconDoubleUp, IconDoubleDown } from "@arco-design/web-react/icon";
 import React, { useEffect } from "react";
-import { getAweme } from "../../utils";
+import { decodeAweme, encodeAweme } from "../../utils";
 import { ObjectEditor } from "./ObjectEditor";
 
 export const EditQrModal: React.FC<{
@@ -35,11 +29,16 @@ export const EditQrModal: React.FC<{
     });
   }, []);
 
-  const syncUp = () => {};
+  const syncUp = () => {
+    const aweme = form.getFieldValue("aweme");
+    const fields = decodeAweme(aweme);
+    console.log(fields);
+    form.setFieldsValue(fields);
+  };
 
   const syncDown = () => {
     const fields = form.getFields();
-    form.setFieldValue("aweme", getAweme(fields));
+    form.setFieldValue("aweme", encodeAweme(fields));
   };
 
   return (
@@ -63,7 +62,7 @@ export const EditQrModal: React.FC<{
             Object.keys(v).includes("path") ||
             Object.keys(v).includes("params")
           ) {
-            form.setFieldValue("aweme", getAweme(vs));
+            form.setFieldValue("aweme", encodeAweme(vs));
           }
         }}
       >
