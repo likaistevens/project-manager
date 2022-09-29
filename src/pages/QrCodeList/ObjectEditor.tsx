@@ -1,6 +1,6 @@
 import { Button, Grid, Input } from "@arco-design/web-react";
 import { IconDelete, IconPlus } from "@arco-design/web-react/icon";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import update from "immutability-helper";
 
 type T = Array<[string, string]>;
@@ -14,7 +14,7 @@ export const ObjectEditor: React.FC<{
       {value?.map(([k, v], index) => {
         return (
           <Grid.Row key={index} gutter={20} className="items-center mb-8">
-            <Grid.Col span={11}>
+            <Grid.Col span={8}>
               <Input
                 value={k}
                 onChange={(v) => {
@@ -26,7 +26,7 @@ export const ObjectEditor: React.FC<{
                 }}
               />
             </Grid.Col>
-            <Grid.Col span={11}>
+            <Grid.Col span={14}>
               <Input
                 value={v}
                 onChange={(v) => {

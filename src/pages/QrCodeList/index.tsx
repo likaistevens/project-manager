@@ -9,7 +9,7 @@ import {
   listQrCode,
   updateQrCode,
 } from "../../api/qrcode";
-import { encodeAweme, includesByPinyin } from "../../utils";
+import { encodeSchema, includesByPinyin } from "../../utils";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { debounce } from "lodash";
 import { DragWindow } from "../../components/DragWindow";
@@ -39,9 +39,6 @@ export const QrCodeList = () => {
   const onSubmit = async () => {
     setVisible(false);
     const fields = form.getFields();
-
-    console.log(fields);
-    console.log(encodeAweme(fields));
     if (fields.id) {
       await updateQrCode(fields);
     } else {
@@ -93,7 +90,7 @@ export const QrCodeList = () => {
       const newList = (list || originList).filter((item) => {
         return includesByPinyin(v, {
           title: item.name,
-          url: item.aweme,
+          url: item.schemaStr,
         });
       });
 
@@ -166,8 +163,8 @@ export const QrCodeList = () => {
           <DragWindow
             key={item.id}
             index={index}
-            title={item.name || item.aweme}
-            url={item.aweme}
+            title={item.name || item.schemaStr}
+            url={item.schemaStr}
             visible={visibleDragWindow[item.id]}
             setVisible={(v) => {
               setIsVisibleDragWindow((old) => {

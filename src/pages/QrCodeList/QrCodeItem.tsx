@@ -1,4 +1,4 @@
-import { Link, Message, Popover } from "@arco-design/web-react";
+import { Link, Message } from "@arco-design/web-react";
 import {
   IconCopy,
   IconDelete,
@@ -19,7 +19,7 @@ export const QrCodeItem: React.FC<{
 }> = ({ item, visible, onDelete, onEdit, onPreview, onHide }) => {
   const onCopy = async () => {
     try {
-      await navigator.clipboard.writeText(item?.aweme || "");
+      await navigator.clipboard.writeText(item?.schemaStr || "");
       Message.success("复制成功");
     } catch (err) {
       Message.success("复制失败");
@@ -44,7 +44,7 @@ export const QrCodeItem: React.FC<{
               item && onPreview(item);
             }}
           >
-            {item?.name || item?.aweme}
+            {item?.name || item?.schemaStr}
           </Link>
           {/* {item?.desc && (
             <Popover title="" content={<span>{item?.desc}</span>}>

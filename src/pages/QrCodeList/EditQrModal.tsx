@@ -5,11 +5,32 @@ import {
   Grid,
   Input,
   Modal,
+  Select,
 } from "@arco-design/web-react";
 import { IconDoubleUp, IconDoubleDown } from "@arco-design/web-react/icon";
 import React, { useEffect } from "react";
-import { decodeAweme, encodeAweme } from "../../utils";
+import { decodeSchema, encodeSchema } from "../../utils";
 import { ObjectEditor } from "./ObjectEditor";
+
+export const protocolOptions = [
+  "aweme",
+  "tiktok",
+  "https",
+  "bullet",
+  "sslocal",
+  "snssdk1180",
+  "snssdk1233",
+];
+
+export const pathOptions = [
+  "lynxview",
+  "webview",
+  "bullet",
+  // "lynxview_popup",
+  // "gecko/download",
+  // "openVideoEdit",
+  // "webcast_room",
+];
 
 export const EditQrModal: React.FC<{
   form: FormInstance;
@@ -17,35 +38,25 @@ export const EditQrModal: React.FC<{
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ form, onSubmit, visible, setVisible }) => {
-  useEffect(() => {
-    form.setFieldsValue({
-      protocol: "aweme",
-      path: "lynxview",
-      params: [
-        ["surl", "http://10.93.235.210:4000/dist/station/template.js"],
-        ["game_id", "cgmo00000000000011911365"],
-        ["global_game_id", "cgmo00000000000011911365"],
-      ],
-    });
-  }, []);
-
   const syncUp = () => {
-    const aweme = form.getFieldValue("aweme");
-    const fields = decodeAweme(aweme);
-    console.log(fields);
+    const schema = form.getFieldValue("schemaStr");
+    const fields = decodeSchema(schema);
     form.setFieldsValue(fields);
   };
 
   const syncDown = () => {
     const fields = form.getFields();
-    form.setFieldValue("aweme", encodeAweme(fields));
+    form.setFieldValue("schemaStr", encodeSchema(fields));
   };
 
   return (
     <Modal
       title="Edit QR Code"
       visible={visible}
-      onOk={onSubmit}
+      onOk={async () => {
+        await form.validate();
+        onSubmit();
+      }}
       onCancel={() => setVisible(false)}
       autoFocus={false}
       focusLock={true}
@@ -62,7 +73,7 @@ export const EditQrModal: React.FC<{
             Object.keys(v).includes("path") ||
             Object.keys(v).includes("params")
           ) {
-            form.setFieldValue("aweme", encodeAweme(vs));
+            form.setFieldValue("schemaStr", encodeSchema(vs));
           }
         }}
       >
@@ -83,7 +94,17 @@ export const EditQrModal: React.FC<{
               wrapperCol={{ span: 15 }}
               rules={[{ required: true }]}
             >
-              <Input />
+              <Select
+                allowCreate
+                placeholder="please enter protocol"
+                allowClear
+              >
+                {protocolOptions.map((option) => (
+                  <Select.Option key={option} value={option}>
+                    {option}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
           </Grid.Col>
           <Grid.Col span={12}>
@@ -93,7 +114,13 @@ export const EditQrModal: React.FC<{
               wrapperCol={{ span: 15 }}
               rules={[{ required: true }]}
             >
-              <Input />
+              <Select allowCreate placeholder="please enter path" allowClear>
+                {pathOptions.map((option) => (
+                  <Select.Option key={option} value={option}>
+                    {option}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
           </Grid.Col>
         </Grid.Row>
@@ -125,7 +152,7 @@ export const EditQrModal: React.FC<{
           </Button>
         </div>
 
-        <Form.Item field="aweme" label="Aweme">
+        <Form.Item field="schemaStr" label="Schema">
           <Input.TextArea autoSize={{ minRows: 3 }} />
         </Form.Item>
 

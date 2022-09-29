@@ -44,6 +44,6 @@ export type QrCodeItemType = {
   protocol?: string;
   path?: string;
   params: Array<[string, string]>;
-  aweme: string;
+  schemaStr: string;
   imageId?: string;
 };

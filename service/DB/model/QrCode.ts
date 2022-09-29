@@ -8,7 +8,7 @@ const QrCodeSchema = new Schema({
   protocol: { type: String },
   path: { type: String },
   params: [{ type: [{ type: String }] }],
-  aweme: { type: String },
+  schemaStr: { type: String },
   url: { type: String },
   imageId: { type: String },
 });
