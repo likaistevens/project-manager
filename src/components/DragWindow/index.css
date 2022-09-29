@@ -17,4 +17,5 @@
   box-sizing: border-box;
   border-bottom: 1px solid gray;
   flex-shrink: 0;
+  font-weight: 800;
 }

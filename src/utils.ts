@@ -1,5 +1,6 @@
 import { pinyin } from "pinyin-pro";
 import { includes } from "lodash";
+import { QrCodeItemType } from "./type";
 
 export const getId = (prefix: string) => {
   const min = 100000;
@@ -38,4 +39,12 @@ export function includesByPinyin(
       return includeStr(item || "");
     });
   }
+}
+
+export function getAweme(item: Partial<QrCodeItemType>) {
+  const sp = new URLSearchParams();
+  item.params?.forEach((p) => {
+    sp.append(p[0], p[1]);
+  });
+  return `${item.protocol}://${item.path}?${sp.toString()}`;
 }

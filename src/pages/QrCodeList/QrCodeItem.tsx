@@ -1,5 +1,6 @@
-import { Link, Popover } from "@arco-design/web-react";
+import { Link, Message, Popover } from "@arco-design/web-react";
 import {
+  IconCopy,
   IconDelete,
   IconEdit,
   IconEye,
@@ -16,6 +17,15 @@ export const QrCodeItem: React.FC<{
   onHide: (info: QrCodeItemType) => void;
   visible: boolean;
 }> = ({ item, visible, onDelete, onEdit, onPreview, onHide }) => {
+  const onCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(item?.aweme || "");
+      Message.success("复制成功");
+    } catch (err) {
+      Message.success("复制失败");
+    }
+  };
+
   return (
     <div style={{ marginBottom: 10 }}>
       <div className="flex justify-between">
@@ -24,16 +34,17 @@ export const QrCodeItem: React.FC<{
           style={{ width: "calc(100% - 36px)" }}
         >
           <Link
-            href={item?.url}
-            target="_blank"
             style={{
-              fontWeight: item?.title ? 700 : 400,
+              fontWeight: item?.name ? 700 : 400,
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               overflow: "hidden",
             }}
+            onClick={() => {
+              item && onPreview(item);
+            }}
           >
-            {item?.title || item?.url}
+            {item?.name || item?.aweme}
           </Link>
           {/* {item?.desc && (
             <Popover title="" content={<span>{item?.desc}</span>}>
@@ -42,7 +53,7 @@ export const QrCodeItem: React.FC<{
           )} */}
         </div>
 
-        <div style={{ width: 58, flexShrink: 0 }}>
+        <div style={{ width: 88, flexShrink: 0 }}>
           {visible ? (
             <IconEyeInvisible
               className="icon-btn"
@@ -58,7 +69,11 @@ export const QrCodeItem: React.FC<{
               }}
             />
           )}
-
+          <IconCopy
+            style={{ margin: "0 0 0 8px" }}
+            className="icon-btn"
+            onClick={onCopy}
+          />
           <IconEdit
             style={{ margin: "0 8px" }}
             className="icon-btn"

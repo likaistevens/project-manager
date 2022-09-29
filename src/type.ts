@@ -39,8 +39,11 @@ export type DiaryItem = {
 };
 
 export type QrCodeItemType = {
-  id?: string;
-  title?: string;
-  url?: string;
+  id: string;
+  name: string;
+  protocol?: string;
+  path?: string;
+  params: Array<[string, string]>;
+  aweme: string;
   imageId?: string;
 };

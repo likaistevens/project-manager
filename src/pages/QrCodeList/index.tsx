@@ -9,11 +9,12 @@ import {
   listQrCode,
   updateQrCode,
 } from "../../api/qrcode";
-import { includesByPinyin } from "../../utils";
+import { getAweme, includesByPinyin } from "../../utils";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { debounce } from "lodash";
 import { DragWindow } from "../../components/DragWindow";
 import update from "immutability-helper";
+import { EditQrModal } from "./EditQrModal";
 
 export const QrCodeList = () => {
   const [qrCodeList, setQrCodeList] = useState<QrCodeItemType[]>([]);
@@ -38,6 +39,9 @@ export const QrCodeList = () => {
   const onSubmit = async () => {
     setVisible(false);
     const fields = form.getFields();
+
+    console.log(fields);
+    console.log(getAweme(fields));
     if (fields.id) {
       await updateQrCode(fields);
     } else {
@@ -51,7 +55,7 @@ export const QrCodeList = () => {
   const onDelete = async (item: QrCodeItemType) => {
     Modal.confirm({
       title: "确认删除？",
-      content: `确认删除 ${item.title}？`,
+      content: `确认删除 ${item.name}？`,
       okButtonProps: {
         status: "danger",
       },
@@ -88,9 +92,8 @@ export const QrCodeList = () => {
     if (v) {
       const newList = (list || originList).filter((item) => {
         return includesByPinyin(v, {
-          title: item.title,
-          // des: item.desc,
-          url: item.url,
+          title: item.name,
+          url: item.aweme,
         });
       });
 
@@ -143,7 +146,7 @@ export const QrCodeList = () => {
             <QrCodeItem
               key={item.id}
               item={item}
-              visible={visibleDragWindow[item.id || ""]}
+              visible={visibleDragWindow[item.id]}
               onDelete={onDelete}
               onEdit={onEdit}
               onPreview={onPreview}
@@ -152,57 +155,29 @@ export const QrCodeList = () => {
           );
         })}
       </div>
-
-      <Modal
-        title="Edit QR Code"
+      <EditQrModal
+        form={form}
+        onSubmit={onSubmit}
         visible={visible}
-        onOk={onSubmit}
-        onCancel={() => setVisible(false)}
-        autoFocus={false}
-        focusLock={true}
-        maskClosable={false}
-      >
-        <Form form={form} labelCol={{ span: 3 }} wrapperCol={{ span: 21 }}>
-          <Form.Item
-            field="title"
-            label="标题"
-            wrapperCol={{ span: 15 }}
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item field="url" label="链接" rules={[{ required: true }]}>
-            <Input.TextArea autoSize={{ minRows: 3 }} />
-          </Form.Item>
-
-          {/* <Form.Item field="desc" label="描述">
-            <Input />
-          </Form.Item> */}
-        </Form>
-      </Modal>
-
+        setVisible={setVisible}
+      />
       {qrCodeList.map((item, index) => {
-        if (!item.url || !item.id) {
-          return null;
-        } else {
-          return (
-            <DragWindow
-              key={item.id}
-              index={index}
-              title={item.title || item.url}
-              url={item.url}
-              visible={visibleDragWindow[item.id]}
-              setVisible={(v) => {
-                setIsVisibleDragWindow((old) => {
-                  return update(old, { [item.id || ""]: { $set: v } });
-                });
-              }}
-            >
-              <canvas id={`canvas${index}`} />
-            </DragWindow>
-          );
-        }
+        return (
+          <DragWindow
+            key={item.id}
+            index={index}
+            title={item.name || item.aweme}
+            url={item.aweme}
+            visible={visibleDragWindow[item.id]}
+            setVisible={(v) => {
+              setIsVisibleDragWindow((old) => {
+                return update(old, { [item.id]: { $set: v } });
+              });
+            }}
+          >
+            <canvas id={`canvas${index}`} />
+          </DragWindow>
+        );
       })}
     </div>
   );

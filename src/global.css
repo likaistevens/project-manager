@@ -62,3 +62,19 @@
   color: rgb(var(--link-6));
   /* background-color:rgb(242, 243, 245); */
 }
+
+.icon-btn.arco-icon-delete:hover {
+  color: rgb(245, 63, 63);
+}
+
+.mb-8 {
+  margin-bottom: 6px;
+}
+
+.mt-16 {
+  margin-top: 16px;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
