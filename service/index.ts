@@ -23,6 +23,12 @@ import {
 } from "./routes/diary";
 import { FULL_CONFIG } from "./const";
 import dotenv from "dotenv";
+import {
+  createQrCode,
+  deleteQrCode,
+  listQrCode,
+  updateQrCode,
+} from "./routes/qrcode";
 
 dotenv.config();
 
@@ -46,10 +52,14 @@ const handle = {
   "/listDiary": listDiary,
   "/updateDiary": updateDiary,
   "/deleteDiary": deleteDiary,
+  // qrcode
+  "/createQrCode": createQrCode,
+  "/listQrCode": listQrCode,
+  "/updateQrCode": updateQrCode,
+  "/deleteQrCode": deleteQrCode,
 };
 
 const start = (route: Route, handle: Record<string, Function>) => {
-  console.log(process.env.NODE_ENV);
   const onRequest: http.RequestListener = (request, response) => {
     const pathname = url.parse(request.url || "").pathname || "";
     route(pathname, handle, request, response);
@@ -58,6 +68,5 @@ const start = (route: Route, handle: Record<string, Function>) => {
   http.createServer(onRequest).listen(SERVER_PORT);
   console.log("server start at port " + SERVER_PORT);
 };
-console.log("********", process.env.NODE_ENV);
 
 start(route, handle);

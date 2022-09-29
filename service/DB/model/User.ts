@@ -12,6 +12,7 @@ const UserSchema = new Schema({
   diary: [{ type: String }],
   todo: [{ type: String }],
   link: [{ type: String }],
+  qrcode: [{ type: String }],
 });
 
 const UserModel = mongoose.model("user", UserSchema);

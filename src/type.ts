@@ -37,3 +37,10 @@ export type DiaryItem = {
   date?: number;
   content?: string;
 };
+
+export type QrCodeItemType = {
+  id?: string;
+  title?: string;
+  url?: string;
+  imageId?: string;
+};

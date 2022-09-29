@@ -102,7 +102,7 @@ export const DiaryCard: React.FC<{
           {/* @ts-ignore */}
           <DatePicker
             triggerElement={
-              <span className="cursor-pointer">{date.format("MM - DD")}</span>
+              <span className="icon-btn">{date.format("MM - DD")}</span>
             }
             style={{ width: 268 }}
             value={date}
@@ -115,13 +115,13 @@ export const DiaryCard: React.FC<{
           {isEdit ? (
             <IconSave
               style={{ marginRight: 8 }}
-              className="cursor-pointer"
+              className="icon-btn"
               onClick={onSave}
             />
           ) : (
             <IconEdit
               style={{ marginRight: 8 }}
-              className="cursor-pointer"
+              className="icon-btn"
               onClick={() => {
                 console.log("card setIsEdit", true);
                 setIsEdit(true);
@@ -129,7 +129,7 @@ export const DiaryCard: React.FC<{
             />
           )}
 
-          <IconDelete className="cursor-pointer" onClick={onDelete} />
+          <IconDelete className="icon-btn" onClick={onDelete} />
         </div>
       </div>
       <div style={{ padding: 15 }}>

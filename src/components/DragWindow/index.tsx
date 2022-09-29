@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import QRCode from "qrcode";
-import { IconCloseCircle } from "@arco-design/web-react/icon";
+import { IconClose } from "@arco-design/web-react/icon";
+import "./index.css";
 
-const width = 400;
-const height = 400;
+const minWidth = 200;
+const minHeight = 250;
+const titleHeight = 50;
 
 export const DragWindow: React.FC<{
   index: number;
@@ -16,9 +18,11 @@ export const DragWindow: React.FC<{
 }> = ({ index, children, visible, setVisible, title, url }) => {
   const titleRef = useRef(null);
   const app = document.getElementById("app");
-  const [top, setTop] = useState<string | number>(`calc(50% - ${width / 2}px)`);
+  const [top, setTop] = useState<string | number>(
+    `calc(50% - ${minHeight / 2}px)`
+  );
   const [left, setLeft] = useState<string | number>(
-    `calc(50% - ${height / 2}px)`
+    `calc(50% - ${minWidth / 2}px)`
   );
   const [offsetX, setOffsetX] = useState(100);
   const [offsetY, setOffsetY] = useState(0);
@@ -37,26 +41,16 @@ export const DragWindow: React.FC<{
     }
   }, [visible]);
 
-  //   useEffect(() => {
-  // console.log(app);
-  //   }, [visible]);
-
   return (
     <>
       {app &&
         visible &&
         ReactDOM.createPortal(
           <div
+            className="portal"
             style={{
-              width,
-              height,
-              background: "white",
-              position: "absolute",
-              border: "1px solid gray",
-              display: "flex",
-              flexDirection: "column",
-              cursor: "move",
-              borderRadius: 8,
+              minWidth,
+              minHeight,
               top,
               left,
               zIndex: index,
@@ -87,14 +81,9 @@ export const DragWindow: React.FC<{
             }}
           >
             <div
-              className="flex justify-between items-center"
+              className="flex justify-between items-center title"
               style={{
-                width: "100%",
-                height: 50,
-                padding: "0 15px",
-                boxSizing: "border-box",
-                borderBottom: "1px solid gray",
-                flexShrink: 0,
+                height: titleHeight,
               }}
               ref={titleRef}
             >
@@ -107,16 +96,27 @@ export const DragWindow: React.FC<{
               >
                 {title}
               </span>
-              <div>
-                <IconCloseCircle
-                  className="cursor-pointer"
+              <div
+                style={{ width: 30, height: "100%" }}
+                className="flex-center"
+                onMouseMove={(e) => e.stopPropagation()}
+                onMouseDown={(e) => e.stopPropagation()}
+                onMouseUp={(e) => e.stopPropagation()}
+                onMouseLeave={(e) => e.stopPropagation()}
+              >
+                <IconClose
+                  fontSize={18}
+                  className="icon-btn"
                   onClick={() => {
                     setVisible(false);
                   }}
                 />
               </div>
             </div>
-            <div className="flex justify-center items-center w-full h-full">
+            <div
+              className="flex-center w-full h-full"
+              style={{ minHeight: minHeight - titleHeight }}
+            >
               {children}
             </div>
           </div>,

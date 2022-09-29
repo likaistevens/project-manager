@@ -8,6 +8,7 @@ import { updateProject } from "../../api/project";
 import { debounce } from "lodash";
 import { IconDelete, IconEdit } from "@arco-design/web-react/icon";
 import TextArea from "../../components/TextArea";
+import "./index.css";
 
 export const ProjectCard: React.FC<{
   index: number;
@@ -46,13 +47,13 @@ export const ProjectCard: React.FC<{
         <div>
           <IconEdit
             style={{ marginRight: 8 }}
-            className="cursor-pointer"
+            className="card-icon-btn"
             onClick={() => {
               onEdit(info);
             }}
           />
           <IconDelete
-            className="cursor-pointer"
+            className="card-icon-btn"
             onClick={() => {
               onDelete(info);
             }}
@@ -74,7 +75,6 @@ export const ProjectCard: React.FC<{
                   const newValue = update(oldValue, {
                     [index]: { todo: { $set: v } },
                   });
-                  // console.log(setProjectList);
                   onSubmit(newValue[index]);
                   return newValue;
                 });

@@ -2,16 +2,20 @@ import { Link, Popover } from "@arco-design/web-react";
 import {
   IconDelete,
   IconEdit,
-  IconQuestionCircle,
+  IconEye,
+  IconEyeInvisible,
 } from "@arco-design/web-react/icon";
 import React from "react";
-import { LinkItemType } from "../../type";
+import { QrCodeItemType } from "../../type";
 
-export const LinkItem: React.FC<{
-  item?: LinkItemType;
-  onDelete: (id: LinkItemType) => void;
-  onEdit: (info: LinkItemType) => void;
-}> = ({ item, onDelete, onEdit }) => {
+export const QrCodeItem: React.FC<{
+  item?: QrCodeItemType;
+  onDelete: (id: QrCodeItemType) => void;
+  onEdit: (info: QrCodeItemType) => void;
+  onPreview: (info: QrCodeItemType) => void;
+  onHide: (info: QrCodeItemType) => void;
+  visible: boolean;
+}> = ({ item, visible, onDelete, onEdit, onPreview, onHide }) => {
   return (
     <div style={{ marginBottom: 10 }}>
       <div className="flex justify-between">
@@ -31,16 +35,32 @@ export const LinkItem: React.FC<{
           >
             {item?.title || item?.url}
           </Link>
-          {item?.desc && (
+          {/* {item?.desc && (
             <Popover title="" content={<span>{item?.desc}</span>}>
               <IconQuestionCircle className="icon-btn" />
             </Popover>
-          )}
+          )} */}
         </div>
 
-        <div style={{ width: 36, flexShrink: 0 }}>
+        <div style={{ width: 58, flexShrink: 0 }}>
+          {visible ? (
+            <IconEyeInvisible
+              className="icon-btn"
+              onClick={() => {
+                item && onHide(item);
+              }}
+            />
+          ) : (
+            <IconEye
+              className="icon-btn"
+              onClick={() => {
+                item && onPreview(item);
+              }}
+            />
+          )}
+
           <IconEdit
-            style={{ marginRight: 8 }}
+            style={{ margin: "0 8px" }}
             className="icon-btn"
             onClick={() => {
               item && onEdit(item);
