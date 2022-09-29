@@ -16,7 +16,7 @@ export const ProjectCard: React.FC<{
   onDelete: (item: ProjectCardType) => void;
   onEdit: (item: ProjectCardType) => void;
 }> = ({ index, projectList, setProjectList, onDelete, onEdit }) => {
-  const color = getColor(index);
+  const color = getColor(projectList.length - index - 1);
   const info = projectList[index];
 
   const onSubmit = debounce(async (newValue: ProjectCardType) => {

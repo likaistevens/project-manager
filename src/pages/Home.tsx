@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { MyProject } from "./MyProject";
-import { Button, Grid } from "@arco-design/web-react";
+import { Button, Grid, Upload, Image } from "@arco-design/web-react";
 import "./Home.css";
 import { TodoList } from "./TodoList";
 import { ToolBoxList } from "./ToolBoxList";
 import { Diary } from "./Diary";
 import { DragWindow } from "../components/DragWindow";
 import update from "immutability-helper";
+import { UploadImg } from "./UploadImg";
 
 const Home = () => {
   // const [visible, setVisible] = useState(false);
@@ -39,6 +40,7 @@ const Home = () => {
               );
             })}
           </div> */}
+          <UploadImg />
         </Grid.Col>
 
         <Grid.Col span={7} className="main-col">

@@ -109,11 +109,12 @@ export const TodoTextArea: React.FC<{
                 }
               }}
               dangerouslySetInnerHTML={{
-                __html: `${
-                  item.event?.startsWith("http")
-                    ? `<a href=${item.event} target="_blank">${item.event}</a>`
-                    : `${item.event}`
-                }`,
+                // __html: `${
+                //   item.event?.startsWith("http")
+                //     ? `<a href=${item.event} target="_blank">${item.event}</a>`
+                //     : `${item.event}`
+                // }`,
+                __html: item.event,
               }}
             />
           </div>
