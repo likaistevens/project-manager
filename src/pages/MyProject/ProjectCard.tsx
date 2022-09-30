@@ -9,6 +9,7 @@ import { debounce } from "lodash";
 import { IconDelete, IconEdit } from "@arco-design/web-react/icon";
 import TextArea from "../../components/TextArea";
 import "./index.css";
+import cc from "classcat";
 
 export const ProjectCard: React.FC<{
   index: number;
@@ -24,17 +25,33 @@ export const ProjectCard: React.FC<{
     await updateProject(newValue);
   }, 500);
 
+  const onFold = () => {
+    setProjectList((oldValue) => {
+      const oldArchive = oldValue[index].archive;
+      const newValue = update(oldValue, {
+        [index]: { archive: { $set: !oldArchive } },
+      });
+      onSubmit(newValue[index]);
+      return newValue;
+    });
+  };
+
   return (
     <div
       style={{
-        marginBottom: 20,
         borderRadius: 6,
         overflow: "hidden",
         border: `1px solid ${color}`,
+        zIndex: index,
       }}
+      className={cc({
+        "card-unfold": info.archive,
+        "-mb-12": info.archive,
+        "mb-20": !info.archive,
+      })}
     >
       <div
-        className="flex justify-between items-center"
+        className="flex justify-between items-center cursor-pointer"
         style={{
           background: color,
           padding: "10px 15px",
@@ -42,63 +59,68 @@ export const ProjectCard: React.FC<{
           fontWeight: 600,
           color: "#fff",
         }}
+        onClick={onFold}
       >
         <span>{info.name}</span>
         <div>
           <IconEdit
             style={{ marginRight: 8 }}
             className="card-icon-btn"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               onEdit(info);
             }}
           />
           <IconDelete
             className="card-icon-btn"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               onDelete(info);
             }}
           />
         </div>
       </div>
-      <div style={{ padding: 15 }}>
-        <Grid.Row style={{ alignItems: "unset" }}>
-          <Grid.Col span={8}>
-            {Object.entries(info.fields).map(([field, link]) => {
-              return <LinkCard key={field} link={link || ""} field={field} />;
-            })}
-          </Grid.Col>
-          <Grid.Col span={16}>
-            <TodoTextArea
-              value={info.todo}
-              onChange={(v) => {
-                setProjectList((oldValue) => {
-                  const newValue = update(oldValue, {
-                    [index]: { todo: { $set: v } },
+      {!info.archive && (
+        <div style={{ padding: 15 }}>
+          <Grid.Row style={{ alignItems: "unset" }}>
+            <Grid.Col span={8}>
+              {Object.entries(info.fields).map(([field, link]) => {
+                return <LinkCard key={field} link={link || ""} field={field} />;
+              })}
+            </Grid.Col>
+            <Grid.Col span={16}>
+              <TodoTextArea
+                value={info.todo}
+                onChange={(v) => {
+                  setProjectList((oldValue) => {
+                    const newValue = update(oldValue, {
+                      [index]: { todo: { $set: v } },
+                    });
+                    onSubmit(newValue[index]);
+                    return newValue;
                   });
-                  onSubmit(newValue[index]);
-                  return newValue;
-                });
-              }}
-            />
-          </Grid.Col>
-        </Grid.Row>
-        {info.hasDesc && (
-          <div>
-            <TextArea
-              value={info.description}
-              onChange={(v) => {
-                setProjectList((oldValue) => {
-                  const newValue = update(oldValue, {
-                    [index]: { description: { $set: v } },
+                }}
+              />
+            </Grid.Col>
+          </Grid.Row>
+          {info.hasDesc && (
+            <div>
+              <TextArea
+                value={info.description}
+                onChange={(v) => {
+                  setProjectList((oldValue) => {
+                    const newValue = update(oldValue, {
+                      [index]: { description: { $set: v } },
+                    });
+                    onSubmit(newValue[index]);
+                    return newValue;
                   });
-                  onSubmit(newValue[index]);
-                  return newValue;
-                });
-              }}
-            />
-          </div>
-        )}
-      </div>
+                }}
+              />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

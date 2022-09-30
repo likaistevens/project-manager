@@ -95,7 +95,7 @@ export const MyProject: React.FC = () => {
         flexDirection: "column",
       }}
     >
-      <div style={{ display: "flex", marginBottom: 20, height: 32 }}>
+      <div style={{ display: "flex", height: 32 }}>
         <Input.Search
           allowClear
           placeholder=""
@@ -116,10 +116,11 @@ export const MyProject: React.FC = () => {
         </Button>
       </div>
       <div
-        className="overflow-auto"
+        className="overflow-auto pt-20"
         style={{
           marginRight: -20,
           paddingRight: 20,
+          flex: 1,
         }}
       >
         {projectList.map((item, index) => {

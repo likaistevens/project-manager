@@ -1,5 +1,5 @@
 import { Button, Checkbox, Link } from "@arco-design/web-react";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { TodoItem } from "../type";
 import update from "immutability-helper";
 import { getId } from "../utils";
@@ -12,12 +12,25 @@ export const TodoTextArea: React.FC<{
   onChange?: (v: TodoItem[], item: TodoItem, status: string) => void;
 }> = ({ value, onChange }) => {
   const ref = useRef(Math.round(Math.random() * 1000));
+  const timerRef = useRef<any>(null);
 
-  const focus = (index: number, direction: "next" | "pre") => {
+  const [contentEditable, setContentEditable] = useState<boolean>();
+
+  const focus = (index: number, direction: "next" | "pre" | "cur") => {
+    setTimeout(() => {
+      clearTimeout(timerRef.current);
+      console.log("clear timeout");
+      setContentEditable(true);
+      console.log("setContentEditable true");
+    }, 0);
+
+    const map = {
+      next: index + 1,
+      pre: index - 1,
+      cur: index,
+    };
     const t = document.querySelector(
-      `#todo_input_${ref.current}_${
-        direction === "next" ? index + 1 : index - 1
-      }`
+      `#todo_input_${ref.current}_${map[direction]}`
     ) as any;
     t && t.focus();
   };
@@ -45,7 +58,18 @@ export const TodoTextArea: React.FC<{
   }
 
   return (
-    <div>
+    <div
+      // id={`todo_input_area`}
+      onDoubleClick={() => {
+        setContentEditable(true);
+      }}
+      onBlur={() => {
+        timerRef.current = setTimeout(() => {
+          console.log("setContentEditable false");
+          setContentEditable(false);
+        }, 100);
+      }}
+    >
       {value?.map((item, index) => {
         return (
           <div key={item.id} className="flex">
@@ -60,12 +84,33 @@ export const TodoTextArea: React.FC<{
               style={{ marginRight: 8 }}
             />
             <div
-              style={item.done ? finishedStyle : { fontWeight: 600 }}
+              style={{
+                ...(item.done ? finishedStyle : { fontWeight: 600 }),
+                cursor: contentEditable ? "text" : "pointer",
+              }}
               className="inline-block w-full break-all"
               id={`todo_input_${ref.current}_${index}`}
-              contentEditable
+              contentEditable={contentEditable}
               suppressContentEditableWarning
+              // onDoubleClick={() => {
+              //   // focus(index, "cur");
+              //   setContentEditable((old) => {
+              //     console.log(
+              //       update(old, {
+              //         [index]: { $set: true },
+              //       })
+              //     );
+              //     return update(old, {
+              //       [index]: { $set: true },
+              //     });
+              //   });
+              // }}
               onBlur={(e) => {
+                // setContentEditable((old) => {
+                //   return update(old, {
+                //     [index]: { $set: false },
+                //   });
+                // });
                 const newText = (e.target as any).innerHTML;
                 const newList = update(value, {
                   [index]: { event: { $set: newText } },

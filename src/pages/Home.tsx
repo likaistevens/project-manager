@@ -15,7 +15,7 @@ const Home = () => {
     <>
       <Grid.Row className="h-screen w-screen overflow-hidden">
         <Grid.Col span={5} className="main-col">
-          <div style={{ height: "50%" }} className="overflow-auto">
+          <div style={{ height: "50%" }} className="relative">
             <TodoList />
           </div>
           <div

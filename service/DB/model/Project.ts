@@ -16,6 +16,7 @@ export const ProjectSchema = new Schema({
     starling: { type: String },
   },
   hasDesc: { type: Boolean },
+  archive: { type: Boolean },
   description: { type: String },
   createTime: { type: String },
   todo: [

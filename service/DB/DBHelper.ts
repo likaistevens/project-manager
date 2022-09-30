@@ -1,5 +1,13 @@
 import mongoose from "mongoose";
-const DB_URL = "mongodb://likai:826012639l@10.248.189.85:27017/project_manager";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const usr = process.env.MONGODB_USER;
+const pwd = process.env.MONGODB_PASSWORD;
+const host = process.env.MONGODB_HOST;
+
+const DB_URL = `mongodb://${usr}:${pwd}@${host}:27017/project_manager`;
 
 // 创建连接
 mongoose.connect(DB_URL, {

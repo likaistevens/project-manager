@@ -10,6 +10,7 @@ export const createProject = async (props: HandleProps) => {
 
   const res = await ProjectModel.create({
     ...JSON.parse(postData),
+    archive: true,
     createTime: new Date().getTime(),
   });
 

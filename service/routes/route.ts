@@ -59,8 +59,10 @@ const route: Route = async (pathname, handle, request, response) => {
     response.setHeader("Access-Control-Allow-Origin", origin);
     response.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
     response.setHeader("Access-Control-Allow-Credentials", "true");
+
     const usr = await checkCookie(request, response);
-    if (!usr) {
+    // 用户校验不重定向
+    if (!usr && shortUrl !== "/validateUser") {
       response.writeHead(500, { "Content-Type": "application/json" });
       response.end(
         JSON.stringify({
@@ -85,12 +87,12 @@ const route: Route = async (pathname, handle, request, response) => {
           request,
           response,
           postData,
-          uid: usr.uid,
+          uid: usr!.uid,
         });
         response.end(JSON.stringify(res));
       });
     } else {
-      const res = await handle[shortUrl]({ request, response, uid: usr.uid });
+      const res = await handle[shortUrl]({ request, response, uid: usr!.uid });
       // console.log(res);
       response.end(JSON.stringify(res));
     }

@@ -17,6 +17,8 @@ export type ProjectCardType = {
   hasDesc?: boolean;
   todo?: TodoItem[];
   description?: string;
+  // 是否完成、归档
+  archive?: boolean;
 };
 
 export type TodoItem = {

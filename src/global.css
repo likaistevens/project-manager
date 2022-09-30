@@ -18,6 +18,18 @@
   display: inline-block;
 }
 
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.fixed {
+  position: fixed;
+}
+
 .flex {
   display: flex;
 }
@@ -83,4 +95,19 @@
 
 .mb-16 {
   margin-bottom: 16px;
+}
+
+.-mb-12 {
+  margin-bottom: -12px;
+}
+
+.-mt-12 {
+  margin-top: -12px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+.pt-20 {
+  padding-top: 20px;
 }

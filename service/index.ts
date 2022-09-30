@@ -29,6 +29,7 @@ import {
   listQrCode,
   updateQrCode,
 } from "./routes/qrcode";
+import { validateUser } from "./routes/user";
 
 dotenv.config();
 
@@ -57,6 +58,8 @@ const handle = {
   "/listQrCode": listQrCode,
   "/updateQrCode": updateQrCode,
   "/deleteQrCode": deleteQrCode,
+  // validateUser
+  "/validateUser": validateUser,
 };
 
 const start = (route: Route, handle: Record<string, Function>) => {

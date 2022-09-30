@@ -29,7 +29,7 @@ export const listQrCode = async (props: HandleProps) => {
     list = await QrcodeModal.find({ _id: { $in: qrcode } })
       .lean()
       .sort({
-        createTime: -1,
+        _id: -1,
       });
   } else {
     list = await QrcodeModal.find({
@@ -38,7 +38,7 @@ export const listQrCode = async (props: HandleProps) => {
     })
       .lean()
       .sort({
-        createTime: -1,
+        _id: -1,
       });
   }
 
